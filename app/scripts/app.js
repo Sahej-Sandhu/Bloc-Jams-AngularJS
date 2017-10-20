@@ -1,4 +1,4 @@
-j(function(){
+(function(){
   function config($stateProvider, $locationProvider){
     $locationProvider
       .html5Mode({
