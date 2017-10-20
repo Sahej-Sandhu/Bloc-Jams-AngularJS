@@ -1,11 +1,9 @@
 <main class="album-view container narrow">
   <section class="clearfix">
     <div class="column half">
-      //no clue about this
       <img src="{{ albumPicasso.albumArtUrl }}" class="album-cover-art">
     </div>
     <div class="album-view-details column half">
-      //not sure if this is right. Plus it would be nice to display both the albums
       <h2 class="album-view-title">{{ albumPicasso.title }}</h2>
       <h3 class="album-view-artist">{{ albumPicasso.artist }}</h3>
       <h5 class="album-view-release-info">{{ albumPicasso.year }} {{ albumPicasso.label }}</h5>
@@ -14,7 +12,6 @@
   <table class="album-view-song-list">
     <tr class="album-view-song-item" ng-repeat="song in songs" ng-mouseover="hovered = true" ng-mouseleave="hovered = false">
       <td class="song-item-number">
-        //not too sure about these changes either :o(
         <span ng-show="!playing && !hovered">{{ $index + 1 }}</span>
         <a class="album-song-button" ng-show="!playing && hovered"><span class="ion-play"></span></a>
         <a class="album-song-button" ng-show="playing"><span class="ion-pause"></span></a>
