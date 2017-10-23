@@ -12,8 +12,8 @@
 
     /**
     * @function setSong
-    * @desc Stops currently playing song and loads new audio file as  currentBussObject
-    * @param {Object} song
+    * @desc Stops currently playing song and loads new audio file as currentBuzzObject
+    *@param {Object} song
     */
     var setSong = function(song){
       if(currentBuzzObject){
@@ -27,22 +27,26 @@
       });
 
       currentSong = song;
-    }
+    };
 
     /**
     * @function playSong
-    * @desc sets the currentBuzzObject to play and sets the song to playing
+    * @desc plays song
     */
-    var playSong = function(){
+    var playSong = function(song){
       currentBuzzObject.play();
       song.playing = true;
-    }
+    };
 
+    /**
+    * @function SongPlayer.play
+    * @desc sets and plays a song if it is not currently playing and if it is currently paused
+    */
     SongPlayer.play = function(song){
       if(currentSong !== song){
         setSong(song);
-        currentBuzzObject.play();
-        playSong = true;
+        playSong(song);
+
       }else if(currentSong === song){
         if(currentBuzzObject.isPaused()){
           currentBuzzObject.play();
@@ -50,9 +54,13 @@
       }
     };
 
+    /**
+    * @function SongPlayer.pause
+    * @desc pauses a song
+    */
     SongPlayer.pause = function(song){
       currentBuzzObject.pause();
-      playSong = false;
+      song.playing = false;
     };
 
     return SongPlayer;
