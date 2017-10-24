@@ -1,8 +1,12 @@
 (function(){
-  function SongPlayer(){
+  function SongPlayer(Fixtures){
     var SongPlayer = {};
 
-    var currentSong = null;
+    /**
+    * @desc pointer to album in Fixtures
+    * @type {Object}
+    */
+    var currentAlbum = Fixtures.getAlbum();
 
     /**
     * @desc Buzz object audio file
@@ -18,7 +22,7 @@
     var setSong = function(song){
       if(currentBuzzObject){
         currentBuzzObject.stop();
-        currentSong.playing = null;
+        SongPlayer.currentSong.playing = null;
       }
 
       currentBuzzObject = new buzz.sound(song.audioUrl, {
@@ -26,7 +30,7 @@
         preload: true
       });
 
-      currentSong = song;
+      SongPlayer.currentSong = song;
     };
 
     /**
@@ -39,15 +43,31 @@
     };
 
     /**
+    * @function getSongIndex
+    * @desc gets the index of the song
+    * @type {number} index number
+    */
+    var getSongIndex = function(song){
+      return currentAlbum.songs.indexOf(song);
+    };
+
+    /**
+    * @desc Active song object from list of songs
+    * @type {Object}
+    */
+    SongPlayer.currentSong = null;
+
+    /**
     * @function SongPlayer.play
     * @desc sets and plays a song if it is not currently playing and if it is currently paused
     */
     SongPlayer.play = function(song){
-      if(currentSong !== song){
+      song = song || SongPlayer.currentSong;
+      if(SongPlayer.currentSong !== song){
         setSong(song);
         playSong(song);
 
-      }else if(currentSong === song){
+      }else if(SongPlayer.currentSong === song){
         if(currentBuzzObject.isPaused()){
           currentBuzzObject.play();
         }
@@ -59,8 +79,28 @@
     * @desc pauses a song
     */
     SongPlayer.pause = function(song){
+      song = song || SongPlayer.currentSong;
       currentBuzzObject.pause();
       song.playing = false;
+    };
+
+    /**
+    * @function SongPlayer.previous
+    * @desc get previous index by subtracting currentSongIndex and check to see if previous index exists and assign values accordingly 
+    * @type {number} index previous
+    */
+    SongPlayer.previous = function(){
+      var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+      currentSongIndex--;
+
+      if(currentSongIndex < 0){
+        currentBuzzObject.stop();
+        SongPlayer.currentSong.playing = null;
+      }else{
+        var song = currentAlbum.songs[currentSongIndex];
+        setSong(song);
+        playSong(song);
+      }
     };
 
     return SongPlayer;
@@ -68,5 +108,5 @@
 
   angular
     .module('blocJams')
-    .factory('SongPlayer', SongPlayer);
+    .factory('SongPlayer', ['Fixtures', SongPlayer]);
 })();
