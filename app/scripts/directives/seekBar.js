@@ -12,7 +12,9 @@
       templateUrl: '/templates/directives/seek_bar.html',
       replace: true,
       restrict: 'E',
-      scope: { },
+      scope: {
+        onChange: '&'
+      },
       link: function(scope, element, attributes){
         scope.value = 0;
         scope.max = 100;
@@ -33,6 +35,7 @@
         scope.onClickSeekBar = function(event){
           var percent = calculatePercent(seekBar, event);
           scope.value = percent * scope.max;
+          notifyOnChange(scope.value);
         };
 
         scope.trackThumb = function(){
@@ -40,6 +43,7 @@
             var percent = calculatePercent(seekBar, event);
             scope.$apply(function(){
               scope.value = percent * scope.max;
+              notifyOnChange(scope.value);
             });
           });
 
@@ -47,6 +51,12 @@
             $document.unbind('mousemove.thumb');
             $document.unbind('mouseup.thumb');
           });
+        };
+
+        var notifyOnChange = function(newValue){
+          if(typeof scope.onChange === 'function'){
+            scope.onChange({ value: newValue});
+          }
         };
 
         scope.thumbStyle = function(){
