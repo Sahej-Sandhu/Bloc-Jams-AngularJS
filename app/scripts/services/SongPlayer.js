@@ -17,7 +17,7 @@
     /**
     * @function setSong
     * @desc Stops currently playing song and loads new audio file as currentBuzzObject
-    *@param {Object} song
+    * @param {Object} song
     */
     var setSong = function(song){
       if(currentBuzzObject){
@@ -33,6 +33,7 @@
       currentBuzzObject.bind('timeupdate', function(){
         $rootScope.$apply(function(){
           SongPlayer.currentTime = currentBuzzObject.getTime();
+          // var duration = currentBuzzObject.getDuration();
         });
       });
 
@@ -54,7 +55,8 @@
     */
     var stopSong = function(song){
       currentBuzzObject.stop();
-      SongPlayer.currentSong.playing = null;
+      // SongPlayer.currentSong.playing = null;
+      song.playing = null;
     };
 
     /**
@@ -146,6 +148,22 @@
     SongPlayer.setCurrentTime = function(time){
       if(currentBuzzObject){
         currentBuzzObject.setTime(time);
+      }
+    };
+
+    /**
+    * @desc Player volume
+    * @type {Percent}
+    */
+    SongPlayer.volume = null;
+
+    /**
+    * @function SongPlayer.setVolume
+    * @desc Set the volume level with seek bar
+    */
+    SongPlayer.setVolume = function(volume){
+      if(currentBuzzObject){
+        currentBuzzObject.setVolume(volume);
       }
     };
 

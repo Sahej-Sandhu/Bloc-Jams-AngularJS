@@ -7,7 +7,8 @@
       offsetXPercent = Math.max(0, offsetXPercent);
       offsetXPercent = Math.min(1, offsetXPercent);
       return offsetXPercent;
-    }
+    };
+
     return{
       templateUrl: '/templates/directives/seek_bar.html',
       replace: true,
@@ -20,6 +21,14 @@
         scope.max = 100;
 
         var seekBar = $(element);
+
+        attributes.$observe('value', function(newValue) {
+          scope.value = newValue;
+        });
+
+        attributes.$observe('max', function(newValue) {
+          scope.max = newValue;
+        });
 
         var percentString = function(){
           var value = scope.value;
@@ -64,7 +73,7 @@
         };
       }
     };
-  };
+  }
 
   angular
     .module('blocJams')
